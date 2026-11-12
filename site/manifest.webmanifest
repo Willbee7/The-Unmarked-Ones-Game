@@ -1,0 +1,14 @@
+{
+  "name": "The Unmarked Ones — A Living Novel",
+  "short_name": "Unmarked Ones",
+  "description": "A branching fantasy novel shaped by your decisions.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#10151b",
+  "theme_color": "#10151b",
+  "icons": [
+    {"src":"icon.png","sizes":"256x256","type":"image/png","purpose":"any maskable"},
+    {"src":"apple-touch-icon.png","sizes":"180x180","type":"image/png"}
+  ]
+}
