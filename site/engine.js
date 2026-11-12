@@ -225,7 +225,55 @@ function menuModal(){const body=$('modalBody');body.replaceChildren();
  const enabled=!!localStorage.getItem('unmarked-narrator-access');
  paragraph(body,enabled?'This device has a narrator access passphrase saved. The actual AI still requires a Netlify function with a server-side API key.':'AI is not unlocked on this device. Typing actions uses the limited offline interpreter.', 'small');
  const aiActions=document.createElement('div');aiActions.className='modal-buttons';
- modalAction(aiActions,enabled?'Change narrator passphrase':'Enter narrator passphrase',()=>{const val=window.prompt('Enter the PRIVATE narrator access passphrase (not your OpenAI API key):','');if(val===null)return;if(val.length<8||val.length>150){window.alert('Use a private passphrase of 8 to 150 characters.');return;}localStorage.setItem('unmarked-narrator-access',val);closeModal();render();});
+ modalAction(aiActions,enabled?'Change narrator passphrase':'Enter narrator passphrase',()=>{
+  const existing=body.querySelector('#narratorPassphraseForm');
+  if(existing){existing.querySelector('input').focus();return;}
+  const form=document.createElement('form');
+  form.id='narratorPassphraseForm';
+  form.noValidate=true;
+  form.style.cssText='margin:14px 0 20px;padding:15px;border:1px solid #bdaa8a;border-radius:8px;background:#fff8ed;';
+  const label=document.createElement('label');
+  label.htmlFor='narratorPassphraseInput';
+  label.textContent='Private narrator access passphrase';
+  label.style.cssText='display:block;font:600 13px ui-sans-serif,system-ui,sans-serif;margin-bottom:9px;';
+  const input=document.createElement('input');
+  input.id='narratorPassphraseInput';
+  input.type='password';
+  input.autocomplete='off';
+  input.maxLength=150;
+  input.required=true;
+  input.placeholder='Enter your private narrator passphrase';
+  input.style.cssText='width:100%;box-sizing:border-box;min-height:46px;padding:10px;font:16px ui-sans-serif,system-ui,sans-serif;color:#27231e;background:#fff;border:1px solid #bdaa8a;border-radius:6px;';
+  const tip=document.createElement('p');
+  tip.className='small';
+  tip.textContent='Use the narrator passphrase saved in Netlify, never your OpenAI API key.';
+  const message=document.createElement('p');
+  message.setAttribute('role','alert');
+  message.style.cssText='color:#8a3935;font:13px ui-sans-serif,system-ui,sans-serif;';
+  const controls=document.createElement('div');
+  controls.className='modal-buttons';
+  const saveButton=document.createElement('button');
+  saveButton.type='submit';
+  saveButton.textContent='Save passphrase';
+  const cancelButton=document.createElement('button');
+  cancelButton.type='button';
+  cancelButton.textContent='Cancel';
+  cancelButton.addEventListener('click',()=>form.remove());
+  controls.append(saveButton,cancelButton);
+  form.append(label,input,tip,message,controls);
+  form.addEventListener('submit',event=>{
+   event.preventDefault();
+   const val=input.value;
+   if(val.length<8||val.length>150){message.textContent='Use a passphrase between 8 and 150 characters.';input.focus();return;}
+   try{localStorage.setItem('unmarked-narrator-access',val);}
+   catch(error){message.textContent='Unable to save. Check browser storage permissions.';return;}
+   input.value='';
+   closeModal();
+   render();
+  });
+  aiActions.after(form);
+  input.focus();
+ });
  if(enabled)modalAction(aiActions,'Disable AI on this device',()=>{localStorage.removeItem('unmarked-narrator-access');closeModal();render();});
  body.append(aiActions);
  heading(body,'Reading & save');
