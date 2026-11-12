@@ -136,7 +136,7 @@ const STORY={
   observed(s,'searched_ruins')?'Elena crossed beside him. They were alive, but they had not brought the family they had hoped to save.':'He crossed alone. There was no laughter, no company of friends, and no one to tell him he had done well.',
   'He was free. The word did not feel the way he had imagined.',
   p('Freedom had come. He had paid for it with a future he could scarcely imagine now.','thought')
- ],choices:[opt('Begin the life beyond Luminara','_finishIntro','',null,{mark:'alt_escape'})]},
+ ],choices:[opt('See what this different freedom demands','alternate_horizon','',null,{mark:'alt_escape'})]},
  gather:{act:'INTRODUCTION · A WAY OUT',title:'The Hidden Passage',place:'The Pit · The last safe cave',text:s=>[
   'One night, with the guards searching ever closer, old Lysander brought the survivors into a hidden cave. He revealed a passage older than the kingdom, a route that might lead beyond the Immortals’ reach.',
   'Kael looked around at the people who had become his family: Elena, fierce and exhausted; Ulysses, his oldest friend and fiercest rival; Thorne, master of hand-to-hand combat; and Thorne’s younger brother Lysander, a gifted archer. Cidric, whose knowledge of old languages had saved them before, knelt over the map.',
@@ -196,8 +196,8 @@ const STORY={
   observed(s,'elder_lives')?'The old scavenger Lysander stepped into the light with help on either side. Kael could not stop looking at him: a life he might so easily have lost.':'The old scavenger Lysander was absent. Kael had reached freedom, but not with everyone he had promised to bring.',
   'Elena stood beside him, her expression balanced between wonder and exhaustion. “What do we do now?” she asked.',
   p('“We build a new life,” Kael said. “Together.”','thought')
- ],choices:[opt('Turn the page','_finishIntro')]},
- post_hill:{act:'CHAPTER ONE · THE OTHER SIDE',title:'Morning Without Walls',place:'Beyond Luminara · The first hillside',text:s=>[
+ ],choices:[opt('Follow the road into the new world','post_hill')]},
+ post_hill:{act:'INTRODUCTION · THE OTHER SIDE',title:'Morning Without Walls',place:'Beyond Luminara · The first hillside',text:s=>[
   isRuined(s)?'There should have been a company here. Instead Kael stood beneath an open sky with the weight of the destroyed Pit on his shoulders. The world was broad; his path through it had narrowed.':'The first sunrise beyond Luminara came quietly. The company woke beneath an unfamiliar sky. Even the air seemed to belong to a different world.',
   isRuined(s)?(observed(s,'searched_ruins')?'Elena was nearby, collecting the last of their provisions. No one else from the old company had made this crossing with them.':'Kael had no companions to wake. His first meal beyond Luminara was eaten in silence.'):(observed(s,'elder_lives')?'The old scavenger Lysander slept by the fire, his bandages still clean. Thorne and his younger brother guarded the camp while Cidric studied the horizon.':'Elena tended the fire. Thorne and his younger brother watched the low hills, while Cidric unfolded his battered map. Ulysses sat near Kael, as he always had.'),
   s.lives>0?p(s.lives===1?'He knew this morning. That was impossible. He remembered the end of the last one.':`He had seen this morning ${s.lives} times before. The sound of wind through the grass no longer meant innocence.`,'memory'):p(inner(s),'thought'),
@@ -209,7 +209,7 @@ const STORY={
   opt('Study the tracks before approaching the settlement.','scout','A cautious route with its own dangers.',{focus:1}),
   ...(!isRuined(s)?[opt('Stay with the companions and talk around the fire.','companion_talk','A quieter moment that can change a relationship.',{bond:1})]:[])
  ]},
- companion_talk:{act:'CHAPTER ONE · A QUIET MOMENT',title:'People Who Do Not Know',place:'Beyond Luminara · The campfire',text:s=>[
+ companion_talk:{act:'INTRODUCTION · A QUIET MOMENT',title:'People Who Do Not Know',place:'Beyond Luminara · The campfire',text:s=>[
   s.lives>0?'Elena smiled as Kael approached. He remembered the way the last life had ended, though she had never witnessed that death.':'Elena moved nearer the fire, warming her palms above the coals. Thorne and his younger brother argued quietly over how to read the map.',
   s.lives>0?'“What is it?” Elena asked. “You look as though you’ve seen a ghost.”':'“You’ve barely spoken since we crossed,” Elena said. “I thought you’d be happier.”',
   p(inner(s),'thought')
@@ -218,7 +218,7 @@ const STORY={
   opt('Say you are fine and change the subject.','road','Keep the thoughts to yourself.',{numbness:1},{mark:'concealed_feelings'}),
   ...(s.lives>0?[opt('Tell Elena you remember dying.','road','She will not share the memory, but may believe you.',{bond:1,grief:1},{mark:'confessed_memory'})]:[])
  ]},
- scout:{act:'CHAPTER ONE · TRACKS IN THE MUD',title:'The Narrow Causeway',place:'Beyond Luminara · The old road',text:s=>[
+ scout:{act:'INTRODUCTION · TRACKS IN THE MUD',title:'The Narrow Causeway',place:'Beyond Luminara · The old road',text:s=>[
   'Kael found bootprints near the stone causeway. They were fresh. A second set cut into the embankment where someone had waited out of sight.',
   s.lives>0&&knows(s,'crossroad_trap')?p('He remembered the place. He remembered a soldier rising out of the reeds, and the blade that followed.','memory'):'There were two ways forward: a sheltered causeway where an attacker might wait, or a longer path over exposed hills.',
   'Kael could see the market roofs through the trees.'
@@ -226,12 +226,12 @@ const STORY={
   opt('Take the longer route across the ridge.','road','Caution changes who reaches the crossroads first.',{focus:1},{mark:'ridge_detour'}),
   opt('Cross the causeway quickly, trusting your speed.','_postDeath','The ambush is stronger than it looks.',null,{death:'An unseen soldier drove a spear into Kael at the narrow causeway.',learn:'crossroad_trap'})
  ]},
- foresight:{act:'CHAPTER ONE · THE KNOWING',title:'Before the Blow Falls',place:'Beyond Luminara · The road',text:s=>[
+ foresight:{act:'INTRODUCTION · THE KNOWING',title:'Before the Blow Falls',place:'Beyond Luminara · The road',text:s=>[
   isRuined(s)?'Kael turned aside before the patrol reached the causeway. The soldiers searched the empty road where he should have been.':'Kael stopped the group before the bridge. He told Cidric where the soldiers would be waiting, although he offered no explanation for how he knew.',
   'The route changed. The ambush that had once taken him by surprise found no one to trap.',
   s.lives>0?p('The others called it good instinct. Only Kael knew he was walking through a life he had already lost.','memory'):'The road was quiet behind them.'
  ],choices:[opt('Approach the crossroads from the hills.','market','The settlement is still in danger.',{focus:1},{mark:'forewarned'})]},
- road:{act:'CHAPTER ONE · AN UNEASY FREEDOM',title:'The Road to the Crossroads',place:'Beyond Luminara · The lower valley',text:s=>[
+ road:{act:'INTRODUCTION · AN UNEASY FREEDOM',title:'The Road to the Crossroads',place:'Beyond Luminara · The lower valley',text:s=>[
   'The first village beyond Luminara stood at the meeting of two roads. The stalls were half-closed. Travelers hurried away from the square.',
   isRuined(s)?'Kael recognized the smell of fear from the night the Pit burned. Every instinct told him to watch for fire.':'Ulysses asked whether they should stop and barter. Cidric frowned at the fresh hoofprints near the village wall.',
   observed(s,'guard_killed')?p('He remembered the first royal guard he had killed. Back then, he had told himself the choice was necessary. He had stopped being sure when the soldiers returned.','thought'):p('He had fought guards since childhood without needing to kill them. He wondered how long that principle could survive a world he did not understand.','thought')
@@ -239,7 +239,7 @@ const STORY={
   opt('Enter the crossroads and speak to the people there.','market','Find out why everyone is fleeing.',{care:1}),
   opt('Circle the village, looking for soldiers.','market','Approach from a position of strength.',{focus:1},{mark:'approach_flank'})
  ]},
- market:{act:'CHAPTER ONE · THE CROSSROADS',title:'A Battle Among Strangers',place:'Beyond Luminara · The market square',text:s=>[
+ market:{act:'INTRODUCTION · THE CROSSROADS',title:'A Battle Among Strangers',place:'Beyond Luminara · The market square',text:s=>[
   'Steel rang against stone. A patrol was forcing its way through the marketplace, and a masked commander shouted orders from behind a line of shields.',
   'A family crouched behind an overturned cart. They could not cross the square without stepping into the fighting.',
   'The commander began to retreat. If he escaped, he might return with reinforcements. If Kael pursued him, the family would have to find another way out.',
@@ -249,30 +249,29 @@ const STORY={
   opt('Pursue the commander before he escapes.','pursued_commander','Remove the threat first.',{violence:2},{mark:'chased_commander'}),
   opt('Try to separate the commander from his soldiers without abandoning the family.','balanced_market','A difficult compromise.',{focus:2},{mark:'tactical_rescue'})
  ]},
- protected_market:{act:'CHAPTER ONE · THE CHOICE',title:'The Ones Behind the Cart',place:'Beyond Luminara · The market square',text:s=>[
+ protected_market:{act:'INTRODUCTION · THE CHOICE',title:'The Ones Behind the Cart',place:'Beyond Luminara · The market square',text:s=>[
   'Kael turned away from the fleeing commander and made a path through the fight. The family followed him behind a stone fountain and into an alley.',
   'The commander escaped. Whatever he intended next would now have to be faced another day.',
   observed(s,'guard_killed')?'Kael felt the memory of the boy who once chose to kill a helpless guard. Today he had made a different choice. He could not erase the first, but it did not own every decision.':'Kael recognized the feeling. As a boy, he had spared guards to protect the people of the Pit. The reason was different here, but the decision felt familiar.',
   p('A living person could make another choice. That, at least, was still true.','thought')
  ],choices:[opt('See what the battle has left behind.','prisoner')]},
- ignored_market:{act:'CHAPTER ONE · THE CROSSROADS',title:'He Did Not Turn',place:'Beyond Luminara · The market square',text:[
+ ignored_market:{act:'INTRODUCTION · THE CROSSROADS',title:'He Did Not Turn',place:'Beyond Luminara · The market square',text:[
   'Kael saw the family. He knew exactly what the choice in front of him meant.',
   p('Get them out first, he thought. But his feet were already moving after the commander. If that man escaped, more people would die. At least that was what he told himself.','thought'),
   'He pursued the retreating soldiers. When he finally turned back, the family was still alive—but one of them lay injured beside the cart, and precious minutes had been lost.',
-  'He had not tried to kill the civilians. He simply had not fought as hard for them as he might once have done.',
-  p('That was the terrible difference between what he meant to do and what he actually did.','thought')
+  'He had not swung a blade at the family. He had simply kept running while they called for help. Their silence afterward troubled him more than their voices had.'
  ],choices:[opt('Face what happened.','prisoner','His disobedience is part of the story now.',{grief:1},{mark:'ignored_player_rescue'})]},
- pursued_commander:{act:'CHAPTER ONE · THE PURSUIT',title:'A Threat Ended',place:'Beyond Luminara · The market square',text:[
+ pursued_commander:{act:'INTRODUCTION · THE PURSUIT',title:'A Threat Ended',place:'Beyond Luminara · The market square',text:[
   'Kael cut through the soldiers and drove their commander away from the square. The patrol broke formation and retreated.',
   'By the time Kael returned, the family had found shelter, though several bystanders were hurt in the confusion.',
   'The threat had been stopped. The cost of stopping it had not been chosen by Kael alone.'
  ],choices:[opt('See who remains.','prisoner')]},
- balanced_market:{act:'CHAPTER ONE · THE NARROW WAY',title:'A Third Answer',place:'Beyond Luminara · The market square',text:[
+ balanced_market:{act:'INTRODUCTION · THE NARROW WAY',title:'A Third Answer',place:'Beyond Luminara · The market square',text:[
   'Kael tipped the overturned cart across the alley, breaking the soldiers’ line of sight. He shouted for the family to run while he stepped between the commander and his escape route.',
   'It was not perfect. The commander escaped with a wound, and a young merchant suffered a broken arm. But the family reached safety.',
   'Sometimes the answer Kael wanted did not exist. He would have to live with what remained.'
  ],choices:[opt('Search the square for anyone left behind.','prisoner')]},
- prisoner:{act:'CHAPTER ONE · A SECOND LINE',title:'The Man Who Surrendered',place:'Beyond Luminara · An empty stall',text:s=>[
+ prisoner:{act:'INTRODUCTION · A SECOND LINE',title:'The Man Who Surrendered',place:'Beyond Luminara · An empty stall',text:s=>[
   'One soldier had been left behind. His sword lay in the mud and both hands were raised. He was young, terrified, and no longer a threat.',
   s.mind.violence>=4?p('Ending him would be simple. A part of Kael’s mind presented the idea before he could decide whether he wanted it.','thought'):p('The guard in Luminara came back to him: a weapon out of reach, a life that could still be spared.','thought'),
   '“Please,” the soldier whispered. “I’m done fighting.”'
@@ -281,28 +280,28 @@ const STORY={
   opt('Kill the surrendered soldier.','executed_prisoner','The action may conflict with the Kael you have shaped.',{violence:2},{intent:'execute_prisoner',mark:'wanted_execution'}),
   opt('Bind his hands and ask why the patrol attacked.','questioned_prisoner','Answers before judgment.',{focus:2},{mark:'prisoner_questioned'})
  ]},
- refused_execution:{act:'CHAPTER ONE · THE CROSSROADS',title:'The Blade Would Not Fall',place:'Beyond Luminara · An empty stall',text:[
+ refused_execution:{act:'INTRODUCTION · THE CROSSROADS',title:'The Blade Would Not Fall',place:'Beyond Luminara · An empty stall',text:[
   'Kael raised the scavenger’s blade. The soldier shut his eyes.',
   'Then Kael stopped. The man before him was no longer fighting. He had no reason to kill him except the anger he had carried into the square.',
   p('No. Not like this.','thought'),
   'He shoved the soldier toward the road and ordered him to run. The choice Kael had been given was not the choice he finally made.'
  ],choices:[opt('Leave the square.','late_ambush','There will be consequences for sparing him.',{care:1},{mark:'refused_execution'})]},
- spared_prisoner:{act:'CHAPTER ONE · RESTRAINT',title:'A Life Left Standing',place:'Beyond Luminara · The roadside',text:[
+ spared_prisoner:{act:'INTRODUCTION · RESTRAINT',title:'A Life Left Standing',place:'Beyond Luminara · The roadside',text:[
   'Kael kicked the sword into the drainage ditch and gestured toward the road. The soldier fled without looking back.',
   'There was no reward for it. There might not even be gratitude. But the man was alive, and Kael had decided the fight was over.'
  ],choices:[opt('Follow the road away from the settlement.','late_ambush')]},
- executed_prisoner:{act:'CHAPTER ONE · A LINE CROSSED',title:'No One to Fight Back',place:'Beyond Luminara · The roadside',text:s=>[
+ executed_prisoner:{act:'INTRODUCTION · A LINE CROSSED',title:'No One to Fight Back',place:'Beyond Luminara · The roadside',text:s=>[
   'Kael struck once. The soldier fell without a sound.',
   isRuined(s)?'No companion stood beside him to object. That did not mean there was no one left to answer to.':'A silence opened among the companions. Elena stared at the ground. Ulysses watched Kael with an expression he could not read.',
   'The killing had not made the square safer. It had only made one more death part of Kael’s history.',
   p(inner(s),'thought')
  ],choices:[opt('Move away from the bodies.','late_ambush','The others will remember this.',{grief:1},{mark:'prisoner_executed'})]},
- questioned_prisoner:{act:'CHAPTER ONE · AN ANSWER',title:'Orders From Somewhere Else',place:'Beyond Luminara · The market square',text:[
+ questioned_prisoner:{act:'INTRODUCTION · AN ANSWER',title:'Orders From Somewhere Else',place:'Beyond Luminara · The market square',text:[
   'The soldier insisted that his unit had been sent to seize a courier who crossed the valley at dawn. The family had been caught between the patrol and its target.',
   'Kael loosened the bindings enough for the man to leave. The explanation was incomplete, but it told him the violence had not begun with him.',
   'A second set of hoofprints led toward the ridge. Someone might still be tracking them.'
  ],choices:[opt('Follow the hoofprints toward the ridge.','late_ambush','Knowledge may save a life later.',{focus:1},{mark:'heard_courier'})]},
- late_ambush:{act:'CHAPTER ONE · THE REEDS',title:'A Familiar Shape of Danger',place:'Beyond Luminara · The ridge path',text:s=>[
+ late_ambush:{act:'INTRODUCTION · THE REEDS',title:'A Familiar Shape of Danger',place:'Beyond Luminara · The ridge path',text:s=>[
   'Beyond the village, the road narrowed between a bank of reeds and a stone wall. Kael heard armor scrape behind the wall.',
   knows(s,'road_attack')?p('He knew that sound. He had heard it just before dying. His hands trembled, though no one else could understand why.','memory'):'A soldier stepped into view, pointing a crossbow at Kael’s chest. Two more shapes rose behind him.',
   '“You there. Stop.”'
@@ -311,24 +310,182 @@ const STORY={
   opt('Raise your hands and talk.','epilogue','Try to end the confrontation.',{care:1},{mark:'talked_down_patrol'}),
   opt('Rush the crossbowman before he fires.','_postDeath','This time speed may not be enough.',null,{death:'A crossbow bolt pierced Kael’s chest on the ridge road.',learn:'road_attack'})
  ]},
- epilogue:{act:'END OF PROTOTYPE · CHAPTER ONE',title:'A Story That Continues',place:'Beyond Luminara · The open road',text:s=>[
-  'The road opened beyond the ridge. Behind Kael were the decisions that had brought him here, and the people who had survived—or failed to survive—the journey.',
-  isRuined(s)?'The Pit had burned. The company he might have led had never formed. His life beyond Luminara would belong to a different history.':observed(s,'elder_lives')?'The old Lysander lived to see freedom, a change that made every conversation around the campfire different.':'He had left the old scavenger Lysander behind, but the words spoken in the tunnels still followed him.',
-  observed(s,'ignored_player_rescue')?p('He remembered choosing to protect the civilians. He remembered not doing it. He could not pretend the contradiction had not happened.','thought'):p(inner(s),'thought'),
-  s.lives>0?`There were things Kael knew that no one else could know. He had died ${s.lives===1?'once':s.lives+' times'}. What he would do with those memories was still his own burden.`:'He had survived the beginning. The world had not yet shown him everything it could take.',
-  'The chapters beyond this moment are still unwritten in this prototype. Kael’s history is not finished.'
+ epilogue:{act:'INTRODUCTION · THE ROAD UNFOLDS',title:'There Are Roads That Do Not Lead Home',place:'Beyond Luminara · The ridge path',text:s=>[
+  'The last patrol retreated behind the reeds. Kael did not watch them for long. The frightened people in the village were still counting losses, and the old scars of the Pit had not faded simply because there was a sky above him.',
+  observed(s,'prisoner_executed')?'Elena had avoided his eyes since the prisoner fell. Ulysses noticed and said nothing. That silence followed the company down the road.':observed(s,'refused_execution')?'When the surrendering soldier had knelt, Kael had felt the strange distance between an impulse and what his hand would permit. He was still thinking of it.':observed(s,'prisoner_questioned')?'The captive’s account of the missing courier left unanswered questions, and Cidric had already begun marking unfamiliar roads on his map.':'They had survived another confrontation, but survival had not decided what sort of people they would become.',
+  observed(s,'elder_lives')?'Elder Lysander walked slowly at the rear, leaning on a staff. Each step hurt him, but he would not let anyone carry him.':'Kael found his hand closing around empty air where the old scavenger used to stand beside him.',
+  'That night Ulysses asked to speak when the others were ready to sleep.'
  ],choices:[
-  opt('Read Kael’s journal.','_journal','Reflect on the decisions that brought him here.'),
-  opt('Begin a new story from the opening.','_restart','Start a new playthrough; this life does not rewind.')
+  opt('Listen to what Ulysses has to say.','camp_pressure'),
+  opt('Read the account of what has happened so far.','_journal')
  ]},
- return_morning:{act:'CHAPTER ONE · THE SAME MORNING',title:'The World Had Not Moved',place:'Beyond Luminara · The first hillside',text:s=>[
-  'Wind shifted through the grass. The rising sun touched the same distant hill. The morning had come again.',
-  isRuined(s)?'The ruins of the Pit were still behind him. Those who had died there had not come back, and no one was waiting with explanations.':'Elena stirred by the fire. Ulysses said something familiar about the road. Neither looked at Kael as though anything extraordinary had happened.',
-  p(s.lives===1?'I remember the blow. I remember dying. So why am I here?':'Again. The same morning. Another death no one else remembers.','memory'),
-  s.mind.curiosity>=3?p('If the world returned to an earlier moment, what could he change? How much did he actually know?','thought'):s.mind.numbness>=3?p('The surprise was fading. That frightened him in a different way.','thought'):s.mind.rage>=3?p('He wanted to rage at someone, but there was no one who could explain what had happened.','thought'):p('He studied the faces of those around him. They had never seen him die. For them, nothing had happened.','thought')
+ camp_pressure:{act:'INTRODUCTION · FAULT LINES',title:'What Ulysses Cannot Ignore',place:'Beyond Luminara · A camp of wet stone',text:s=>[
+  'The fire had burned low. Rain slipped from the leaves onto the stones around it, and the company sat close enough to hear one another breathe.',
+  '“We cannot keep running together forever,” Ulysses said. “The queen can follow a company more easily than scattered travelers. We need another way.”',
+  observed(s,'ignored_player_rescue')?'Kael heard the suggestion through the memory of the family in the market: people who had been left waiting while he pursued a threat. He wondered whether Ulysses had been watching.':observed(s,'guard_killed')?'Kael had killed a royal guard once, and the pursuit had grown worse afterward. He could understand why Ulysses feared every road.':'Ulysses had trained beside him since childhood. The doubt in his voice hurt more because Kael knew it was not cowardice.',
+  'Thorne demanded to know what would become of his brother. Cidric spoke about splitting supplies. Elena watched Kael, waiting to hear what he would say—not what a leader was supposed to say.'
  ],choices:[
-  opt('Hide the memory and continue as though nothing happened.','post_hill','Kael keeps this knowledge to himself.',{numbness:1},{mark:'hid_recollection'}),
-  opt('Test whether the danger will happen again.','post_hill','Let curiosity guide the next life.',{curiosity:1},{mark:'testing_future'}),
-  opt('Promise yourself that no one else will die this way.','post_hill','Resolve can shelter or consume.',{care:1,defiance:1},{mark:'protective_vow'})
- ]}
+  opt('Tell Ulysses he is free to leave, even if it hurts.','night_trap','', {grief:1,focus:1},{mark:'ulysses_departed'}),
+  opt('Order him to stay until they have a better plan.','night_trap','',{defiance:2},{mark:'ulysses_forced'}),
+  opt('Ask him to help design a safer route instead.','early_signs','',{focus:2,bond:1},{mark:'ulysses_heard'})
+ ]},
+ early_signs:{act:'INTRODUCTION · ANOTHER WAY',title:'A Watch Kept Together',place:'Beyond Luminara · The northern track',text:s=>[
+  'Kael took Ulysses aside instead of arguing before the whole company. They spread Cidric’s map beneath a stone to keep it from the wind.',
+  '“Show me where you think they will come,” Kael said. Ulysses pointed toward a line of scrub overlooking the camp. “There. They have been following us since midday.”',
+  observed(s,'prisoner_questioned')?'The prisoner’s warning about a courier suddenly felt less like a story and more like a trail someone had laid for them.':'Kael searched the dark beyond the tents. A distant glint flashed once, then vanished.',
+  'They could move before midnight, or stay long enough to learn who was watching.'
+ ],choices:[
+  opt('Break camp quietly and lead everyone off the marked road.','unwritten_path','',{focus:2,care:1},{mark:'changed_pursuit'}),
+  opt('Lay a false trail and find out who follows it.','night_trap','',{focus:1},{mark:'exposed_watch'})
+ ]},
+ night_trap:{act:'INTRODUCTION · THE AMBUSH',title:'The Price of a Familiar Voice',place:'Beyond Luminara · The sleeping camp',text:s=>[
+  observed(s,'ulysses_departed')?'Ulysses was gone when the company settled down. Kael kept looking at the empty place beside the fire, as if the absence would explain itself.':'Ulysses had stayed, but he slept away from the others. Every word at the campfire felt as though it might break something.',
+  'A twig snapped beyond the firelight. Then arrows struck the packs. Royal soldiers surged out of the trees with their faces covered and their casting hands already alight.',
+  observed(s,'exposed_watch')?'Kael had suspected a watcher. He had not expected the soldiers to come from the opposite side of the camp.':'The attackers moved as if they knew where every bedroll lay. Kael recognized the shape of the camp he had described aloud the night before.',
+  'Elena raised both hands. Thorne lunged between the soldiers and his brother. For one terrible moment Kael had to decide where he would stand.'
+ ],choices:[
+  opt('Stay beside the others and defend the camp.','taken','',{care:1,defiance:1,hp:-8},{mark:'held_camp'}),
+  opt('Draw the soldiers into the ravine while the others escape.','unwritten_path','',{care:2,hp:-9},{mark:'ravine_diversion'}),
+  opt('Charge the spellcaster without waiting for an opening.','_introDeath','',null,{death:'The royal spellcaster killed Kael during the attack on the camp.'})
+ ]},
+ taken:{act:'INTRODUCTION · A DARKER ROAD',title:'The Night That Would Not End',place:'A hidden royal holding chamber',text:s=>[
+  'The fight ended without a victory. Kael remembered the weight of an enchanted chain around his wrist and Elena calling his name from somewhere he could not see.',
+  observed(s,'ulysses_departed')?'Ulysses had been absent when the soldiers found them. The coincidence sat beneath Kael’s anger like a stone he could not swallow.':observed(s,'ulysses_forced')?'A soldier used a phrase Kael had spoken privately to Ulysses. Kael looked for his oldest friend among the captives and found only shadows.':'The soldiers had known too much about the company, and the shape of the ambush felt deliberate.',
+  'A woman in a dark robe stepped forward. She touched two fingers to his brow. “Let him have the future he wanted,” she told the guards.',
+  'Kael struggled to pull away. The chamber blurred. When he opened his eyes again, the walls were gone.'
+ ],choices:[opt('Open his eyes to the morning.','dream_mountain')]},
+ dream_mountain:{act:'INTRODUCTION · CAIRN HOLD',title:'Allies Among the Mountains',place:'The northern mountains · Cairn Hold',text:s=>[
+  'The days had become weeks. The company reached a mountain fortress where soldiers sharpened blades beside blacksmiths and children carried water between the tents.',
+  'Elysia, commander of a small resistance, listened as Kael told her what Seraphina had done to the Unmarked. He had expected suspicion. Instead, she offered him a place at her war table.',
+  observed(s,'prisoner_executed')?'Kael remembered one life ended by his own hand at the crossroads. Elysia asked whether he could lead fighters who might surrender. He had no answer she would have liked.':'Kael spoke of the people his kingdom had taught him to overlook. For a moment it felt as if he had found someone capable of hearing them.',
+  'The days of preparation passed with a strange ease. Every plan seemed to find its answer before the next question arose.'
+ ],choices:[
+  opt('Train with the resistance and protect the weakest recruits.','dream_assault','',{care:2,bond:1},{mark:'dream_recruits'}),
+  opt('Prepare a direct strike against the palace.','dream_assault','',{focus:1,violence:1},{mark:'dream_assault_plan'})
+ ]},
+ dream_assault:{act:'INTRODUCTION · A WAR DREAMED',title:'The Kingdom at the Gates',place:'Luminara · The capital walls',text:s=>[
+  'The army arrived at dawn. Luminara, which had once seemed vast enough to swallow Kael whole, lay before him like something that could finally be reached.',
+  observed(s,'dream_recruits')?'The young recruits stayed behind the first line, just as Kael had promised Elysia. He heard their voices calling to one another through the smoke.':'Kael pressed his fingers against the lines Cidric had drawn on the map. The assault was exactly where they had planned it, though he could not remember some of the marches that brought them there.',
+  'Thorne and his younger brother fought side by side. Elena’s light held the wounded together. Ulysses appeared beside Kael at a turning in the street, his blade ready and his expression unreadable.',
+  'Beyond the palace doors, a throne waited.'
+ ],choices:[
+  opt('Enter the throne room with the companions.','dream_throne'),
+  opt('Send aid to the wounded before entering.','dream_throne','',{care:1},{mark:'dream_wounded'})
+ ]},
+ dream_throne:{act:'INTRODUCTION · THE QUEEN',title:'The Woman on the Throne',place:'Luminara · The royal audience hall',text:s=>[
+  'Queen Seraphina stood where Kael had imagined her a thousand times. Fire moved beneath her skin. The immense throne made her look no taller than the old scavenger who had once carried Kael through the Pit.',
+  '“My son,” she said. Her voice held neither surprise nor warmth. “Did you come for a crown or an answer?”',
+  observed(s,'guard_killed')?'Kael thought of the first guard he had killed and of the punishment that followed. He wondered whether Seraphina had ever counted the people below her feet.':'Kael thought of the guard he had spared at seven. Sparing him had not softened the queen’s decree, but it had kept one life from being added to her reign.',
+  'Fire spread along the floor between them. The companions waited for Kael to move.'
+ ],choices:[
+  opt('Demand that Seraphina answer for the people she discarded.','dream_fall','',{focus:1,defiance:1},{mark:'dream_accusation'}),
+  opt('Strike before she can burn the room.','dream_fall','',{violence:1},{mark:'dream_strike'}),
+  opt('Ask whether she ever searched for the child she abandoned.','dream_fall','',{grief:1},{mark:'dream_question'})
+ ]},
+ dream_fall:{act:'INTRODUCTION · A FALSE DAWN',title:'The Sound of Victory',place:'Luminara · After the battle',text:s=>[
+  observed(s,'dream_accusation')?'The words reached Seraphina before the blades did. For an instant she looked more like a woman than a legend. Then the last of her defenses broke.':'The battle collapsed into a final clash of steel and magic. The queen fell, and her great fire went out.',
+  observed(s,'dream_question')?'Kael received no answer about the child she had thrown away. He could only look at her still form and wonder whether the silence was all he would ever have.':'The palace fell silent. People began cheering in the streets as though the long years of fear had ended at a single stroke.',
+  'By evening, the city had begun speaking of peace. Kael stood among his companions while a sunset unlike any he remembered touched the ruined towers.',
+  'For the first time, he allowed himself to believe they might be finished running.'
+ ],choices:[opt('Stay with the others until nightfall.','dream_break')]},
+ dream_break:{act:'INTRODUCTION · THE AWAKENING',title:'The Light Comes Apart',place:'A place that should have been peaceful',text:s=>[
+  'Elena was laughing beside the fire. Thorne and his brother were arguing over a cooking pot. Cidric unfolded a clean map, and Ulysses looked at Kael like a friend who had never left.',
+  'Kael reached for the warmth of that moment. The fire cast no heat. The sound of laughter continued after the companions had stopped moving.',
+  'Then another sound rose through it: iron striking stone, followed by a man’s cry of pain.',
+  'The light stretched thin. The faces before him blurred. A terrible cold took hold of Kael’s chest as the whole beautiful evening began to crack.'
+ ],choices:[opt('Open his eyes.','cell_awake')]},
+ cell_awake:{act:'CHAPTER ONE · THE AWAKENING',title:'The Cold Stone Is Real',place:'Luminara · A royal dungeon',text:s=>[
+  'Kael woke with his cheek against wet stone. The last light of victory clung to his sight for an instant before the bars came into focus.',
+  'Across the corridor, Thorne and his younger brother Lysander were bound and bruised beneath the gaze of royal guards. Elena sat in the neighboring cell, her hands trembling in her lap. Neither the war nor the celebration had happened the way Kael remembered them.',
+  'The queen still ruled. His companions were prisoners. Ulysses had disappeared somewhere beyond the door.',
+  'Kael drew a shallow breath and felt every injury he had carried into this place. He had not returned from death. He had awakened from a lie.',
+  'A guard turned at the sound of his breathing. The dungeon smelled of damp stone, iron, and extinguished candles.'
+ ],choices:[
+  opt('Whisper to Elena and find out what she remembers.','cell_elena','',{care:1,bond:1},{mark:'asked_elena'}),
+  opt('Study the bars, the guards, and the chalk marks on the wall.','cell_marks','',{focus:2},{mark:'studied_cell'}),
+  opt('Call the guard over and demand answers.','cell_watch','',{defiance:1},{mark:'challenged_guard'})
+ ]},
+ cell_elena:{act:'CHAPTER ONE · THE NEXT BREATH',title:'The Girl Beyond the Bars',place:'Luminara · The neighboring cell',text:s=>[
+  '“Elena.” Kael had to say her name twice before she looked up.',
+  'She crossed the narrow space between her wall and the bars, her eyes swollen with exhaustion. “They took the others,” she whispered. “I don’t know where.”',
+  'Kael wanted to tell her about the sunlit hill, about the peace he had held for an instant. But her hands were shaking here, in the real cold, and he needed to know what could still be done.',
+  observed(s,'elder_lives')?'He thought of elder Lysander, alive when they crossed the gate. Kael did not know where the soldiers had taken him.':'He heard elder Lysander’s final words in a voice that had long ago gone silent.'
+ ],choices:[
+  opt('Promise her you will find a way out together.','cell_watch','',{care:1,defiance:1},{mark:'cell_promise'}),
+  opt('Ask what she saw before the spell took him.','cell_watch','',{focus:1},{mark:'cell_witness'})
+ ]},
+ cell_marks:{act:'CHAPTER ONE · THE NEXT BREATH',title:'The Scratches in the Wall',place:'Luminara · Kael’s cell',text:s=>[
+  'Kael forced his eyes away from the suffering across the corridor. Scratches broke the mortar between the stones beside his left hand.',
+  'Some were pleas from earlier prisoners. Others followed the same repeating pattern Cidric had once pointed out in the ancient passages: three short strokes, a pause, and a crooked line.',
+  'He traced them slowly. The wall did not open. A small crack behind the iron hinge, however, suggested that someone had attempted the same escape before him.',
+  'The discovery did not free him. It gave him something to remember while the guards were watching.'
+ ],choices:[
+  opt('Keep the discovery to himself.','cell_watch','',{focus:1},{mark:'hinge_noted'}),
+  opt('Quietly tell Elena about the weakened hinge.','cell_watch','',{bond:1,care:1},{mark:'hinge_shared'})
+ ]},
+ cell_watch:{act:'CHAPTER ONE · THE NEXT BREATH',title:'The Guard at the Door',place:'Luminara · The holding cells',text:s=>[
+  'A guard stopped outside Kael’s cell with a key ring in one hand and an elemental sigil dimly glowing on the other.',
+  observed(s,'challenged_guard')?'“You were loud enough to wake the whole corridor,” the guard said. “Try that again.”':observed(s,'hinge_noted')?'Kael kept his gaze on the guard’s wrist, noticing how the ring of keys knocked against his armor.':'The guard peered through the bars, deciding whether the prisoner was worth another question.',
+  'He was close enough for Kael to reach if the door opened. He was also a trained mage, and Kael could barely stand.',
+  p(inner(s),'thought')
+ ],choices:s=>[
+  ...(knows(s,'cell_execution')?[opt('Move back before the sigil ignites; he remembers its reach.','cell_future','',{focus:2},{mark:'avoided_sigil'})]:[]),
+  opt('Lower his voice and ask where the others were taken.','cell_future','',{focus:1},{mark:'asked_guard'}),
+  opt('Insult the guard and test how he reacts.','cell_blow','',{defiance:1},{mark:'provoked_guard'}),
+  opt('Seize the key ring and try to overpower the mage.','_postDeath','',null,{death:'The guard’s elemental magic killed Kael when he lunged through the cell doorway.',learn:'cell_execution'})
+ ]},
+ cell_blow:{act:'CHAPTER ONE · THE PRICE',title:'A Pain He Can Endure',place:'Luminara · The holding cells',text:s=>[
+  'Kael stepped close enough to make the guard turn. His answer came as a sharp blow through the bars.',
+  'Pain burst along Kael’s jaw. He staggered, caught himself against the stone, and remained breathing. The guard laughed and walked on.',
+  'Kael was hurt, not dead. His anger still burned, and he had learned something about the guard’s reach.'
+ ],choices:[opt('Breathe through the pain and watch the corridor.','cell_future','',{focus:1},{mark:'endured_blow'})]},
+ cell_future:{act:'CHAPTER ONE · THE DUNGEON',title:'The Story Has Not Ended',place:'Luminara · Kael’s cell',text:s=>[
+  'The guard’s footsteps faded into the distance. The dungeon did not become kinder, and the bars did not open.',
+  observed(s,'cell_promise')?'Elena had heard his promise. She sat close to the bars now, waiting for him to decide what to try next.':observed(s,'hinge_shared')?'Elena glanced once toward the weakened hinge. She was already thinking about what her unstable magic might do to it.':observed(s,'asked_guard')?'The guard had muttered that the other prisoners had been taken to the eastern cells. It was almost nothing, but it was a direction.':'Kael watched the corridor and measured the distance between one guard’s footsteps and the next.',
+  s.lives>0?p('He also carried a memory of dying here. That memory belonged to him alone.','memory'):p('He had survived the opening of his story. The next choice was still waiting.','thought'),
+  'Beyond the last torch, someone turned a key. Kael raised his head. Whatever came through that door would find him watching.'
+ ],choices:[
+  opt('Keep reading the journal of this life.','_journal'),
+  opt('Return to the guard’s approach and try another action.','cell_watch'),
+  opt('End this playable excerpt.','finished_excerpt')
+ ]},
+ return_cell:{act:'CHAPTER ONE · THE SAME STONE',title:'A Death No One Else Knows',place:'Luminara · Kael’s cell',text:s=>[
+  'The stone beneath Kael’s cheek was cold and wet. He knew that cold. He had awakened here once before.',
+  'The guard had killed him. Kael remembered the final burst of magic and the certainty of his own end. Yet his chest rose with another breath, and no wound remained from the attack.',
+  'Across the corridor the brothers were alive. Elena sat in the neighboring cell, exactly where she had been. None of them looked at Kael as though they had witnessed his death.',
+  p(s.lives===1?'I died. Why am I here again?':`Again. He remembered every time, and the world remembered none of them.`,'memory'),
+  s.mind.numbness>=4?p('A stillness answered his terror. It frightened him that his mind could become this quiet.','thought'):s.mind.rage>=3?p('The helplessness sharpened into anger, and he dug his fingernails into the stone to keep from shouting.','thought'):s.mind.curiosity>=3?p('The scene had repeated. So could its smallest details. What happened if he moved before the guard drew his keys?','thought'):p('He waited for panic to loosen its grip. There was no one here who could explain what he remembered.','thought')
+ ],choices:[
+  opt('Hide his fear and study the moment carefully.','cell_watch','',{focus:1,curiosity:1},{mark:'studied_return'}),
+  opt('Call out to Elena and ask whether she noticed anything strange.','cell_elena','',{care:1,grief:1},{mark:'asked_about_return'}),
+  opt('Wait for the guard and change what happens next.','cell_watch','',{defiance:1},{mark:'changed_death'})
+ ]},
+ alternate_horizon:{act:'INTRODUCTION · A HISTORY DIVIDED',title:'What Remains of the Road',place:'Beyond Luminara · The hills beyond the gate',text:s=>[
+  'The world beyond the gate did not know the names of the dead. Kael could walk for days without meeting anyone who understood what the Pit had been.',
+  observed(s,'searched_ruins')?'Elena traveled beside him, her magic a fragile candle against the open dark. She could not replace the people they had lost, and neither could Kael.':'His footsteps were the only company he could hear. A road forked beyond the crest, both paths leading toward places no one from the Pit had mapped.',
+  'The story that might have carried him toward a band of companions and a rebellion had been broken before it began. That did not leave him without choices. It left him with harder ones.',
+  p(inner(s),'thought')
+ ],choices:[
+  opt('Follow the distant smoke and search for survivors.','alternate_excerpt','',{care:1},{mark:'smoke_route'}),
+  opt('Turn toward the mountain passes, away from anyone who knows Luminara.','alternate_excerpt','',{focus:1},{mark:'mountain_route'})
+ ]},
+ unwritten_path:{act:'INTRODUCTION · AN UNWRITTEN ROAD',title:'The Ambush That Did Not Happen',place:'Beyond Luminara · A hidden track',text:s=>[
+  observed(s,'changed_pursuit')?'The company broke camp before the soldiers closed in. By dawn their old bedrolls were ashes in a fire the patrol had set for enemies who were no longer there.':'Kael dragged the pursuit into the ravine while Elena guided the others away. He escaped by climbing an embankment no soldier could follow in armor.',
+  'Ulysses walked beside the company when they regrouped. There were questions Kael still wanted to ask him, but no chains bound their hands and no queen stood above them.',
+  'Their road would not be the same road that might have led to a dungeon. That difference was not a failure of the story. It was a decision made alive.'
+ ],choices:[
+  opt('Choose a direction for the company’s next journey.','alternate_excerpt','',{focus:1},{mark:'route_rewritten'})
+ ]},
+ alternate_excerpt:{act:'INTRODUCTION · CONTINUES',title:'The Road Still Has No Ending',place:'A different history',text:s=>[
+  'The company—or what remained of it—continued beyond the last familiar trail. Somewhere the queen’s soldiers were planning their next search. Somewhere, a stranger was making a choice that might cross Kael’s path.',
+  'This alternate history has not reached its own conclusion in Prototype V. Nothing is silently forced back into the prison cell, and this is not the end of Kael’s introduction.',
+  'What happens next must be written from the lives that actually survived this journey, not copied from a different one.'
+ ],choices:[opt('Read the journal of this history.','_journal'),opt('Begin another life from the opening.','_restart')]},
+ finished_excerpt:{act:'CHAPTER ONE · CONTINUES',title:'Beyond the Torchlight',place:'Luminara · The royal dungeon',text:s=>[
+  'Kael lowered himself against the wall, listening to the corridor. For the moment, he was alive. The guards still controlled the doors, and the others were still in danger.',
+  'The next part of his life lay somewhere beyond the approaching footsteps.',
+  p(inner(s),'thought'),
+  'Prototype V ends here. The story itself does not.'
+ ],choices:[opt('Return to the dungeon scene.','cell_watch'),opt('Read Kael’s journal.','_journal')]}
+
 };

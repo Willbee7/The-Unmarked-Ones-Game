@@ -2,7 +2,7 @@
    State is saved locally, with physical consequences belonging to the current life and psychological changes carrying across lived experience.
 */
 'use strict';
-const STORAGE='unmarked-ones-living-novel-v2';
+const STORAGE='unmarked-ones-living-novel-v5';
 const $=id=>document.getElementById(id);
 const copy=x=>JSON.parse(JSON.stringify(x));
 const init=()=>({
@@ -20,7 +20,7 @@ function apply(effect){if(!effect)return;for(const [key,value]of Object.entries(
  else if(key==='supplies')state.supplies=Math.max(0,state.supplies+value);
  else if(typeof state.mind[key]==='number')state.mind[key]=Math.min(24,Math.max(0,state.mind[key]+value));
 }}
-function assignScene(next){state.scene=next;if(!state.visited.includes(next))state.visited.push(next);save();render();}
+function assignScene(next){if(next==='cell_awake'&&!state.introComplete){finishIntroduction();return;}state.scene=next;if(!state.visited.includes(next))state.visited.push(next);save();render();}
 function die(cause,learn=''){
  state.lastCause=cause;state.lastLearn=learn;
  if(state.introComplete){state.scene='_postDeath';}
@@ -28,15 +28,18 @@ function die(cause,learn=''){
  save();render();
 }
 function finishIntroduction(){
- state.introComplete=true;state.hp=40;state.pendingBeat=null;
- state.scene='post_hill';
- state.anchor=null;
+ // The illusion breaking at the prison cell, not the surface escape, is the canonical boundary.
+ // This is NOT a death, and the character is not told about any hidden mechanic.
+ state.introComplete=true;state.pendingBeat=null;state.hp=Math.min(40,Math.max(12,state.hp));
+ state.scene='cell_awake';state.anchor=null;
+ if(!state.visited.includes('cell_awake'))state.visited.push('cell_awake');
+ note('Kael woke from the false victory into a royal dungeon.');
  state.anchor=copy({...state,anchor:null,knowledge:[],lives:0,memories:[],lastCause:'',lastLearn:'',lastInterruption:null});
- note('Kael crossed beyond Luminara.');save();render();
+ save();render();
 }
 function reawaken(response){
  const cause=state.lastCause,tag=state.lastLearn;
- // Current personal development survives; the world resumes from the first morning beyond Luminara.
+ // Only Kael retains his emotional experiences; the world returns to the provisional dungeon anchor.
  const after=copy(state.mind);
  const prevMem=copy(state.memories);prevMem.push({life:state.lives+1,cause,tag,feeling:response.label});
  const prevKnowledge=[...state.knowledge];
@@ -45,8 +48,8 @@ function reawaken(response){
  const anchor=copy(state.anchor);
  if(!anchor){restart();return;}
  const oldScale=state.readingScale;
- state={...copy(anchor),anchor,mind:after,scene:'return_morning',lives:prevMem.length,knowledge:prevKnowledge,memories:prevMem,readingScale:oldScale,lastCause:cause,lastLearn:tag,lastInterruption:null};
- note('A morning Kael remembers differently from everyone else.');save();render();
+ state={...copy(anchor),anchor,mind:after,scene:'return_cell',lives:prevMem.length,knowledge:prevKnowledge,memories:prevMem,readingScale:oldScale,lastCause:cause,lastLearn:tag,lastInterruption:null};
+ note('Kael remembers the final moment, but the dungeon does not.');save();render();
 }
 function restart(){const scale=state.readingScale;state=init();state.readingScale=scale;save();render();}
 function choose(ch){
@@ -67,8 +70,9 @@ function choose(ch){
  if(ch.next==='_journal'){journalModal();return;}
  if(ch.next==='_restart'){restart();return;}
  if(ch.next==='_finishIntro'){
-  if(ch.mark)rememberMark(ch.mark);
-  finishIntroduction();return;
+  // Disabled on every path except the canonical prison-cell awakening.
+  if(state.scene==='cell_awake')finishIntroduction();
+  return;
  }
  if(ch.next==='_introDeath'||ch.next==='_postDeath'){
   die(ch.death||'Kael died.',ch.learn||'');return;
@@ -113,17 +117,17 @@ const feelingChoices=()=>{
  ];
 };
 function sceneForRender(){
- if(state.scene==='_typedPrelude' && state.pendingTyped){return {act:STORY[state.pendingTyped.from]?.act||'THE STORY',title:'What Kael Attempts',place:(STORY[state.pendingTyped.from]?.place||'Luminara')+(state.pendingTyped.source==='local'?' · Offline action interpretation':' · AI narration'),text:[state.pendingTyped.passage],choices:[opt('Discover what happens next','_continueTyped')],special:'typed'};}
+ if(state.scene==='_typedPrelude' && state.pendingTyped){return {act:STORY[state.pendingTyped.from]?.act||'THE STORY',title:'And So He Moves',place:(STORY[state.pendingTyped.from]?.place||'Luminara'),text:[state.pendingTyped.passage],choices:[opt('Continue','_continueTyped')],special:'typed'};}
  if(state.scene==='_beat' && state.pendingBeat){return {...state.pendingBeat,choices:[opt('Turn the page','_continueBeat')],special:'beat'};}
  if(state.scene==='_introDeath')return {act:'GAME OVER',title:'You Died',place:'The journey has ended',text:[
    state.lastCause,
-   'Kael’s strength was extraordinary, but it was not enough. This attempt is over.'
+   'The story ends here.'
  ],choices:[opt('Restart from the beginning','_restart','A new attempt starts with Kael’s birth.')],special:'introDeath'};
- if(state.scene==='_postDeath')return {act:'CHAPTER ONE · THE DARKNESS AFTER',title:'The Last Breath',place:'Somewhere beyond the final moment',text:[
+ if(state.scene==='_postDeath')return {act:'THE MOMENT AFTER',title:'The Last Breath',place:'Somewhere beyond the final moment',text:[
    state.lastCause,
    'Kael remembered the final blow. The shock of it. The moment he could no longer move. The certainty that nothing came after.',
    p('I died. I know I died.','memory'),
-   state.lives===0?'Then, impossibly, he felt wind upon his face. He heard a familiar voice calling from a morning that had already passed.':'Again, the world seemed to fold toward a morning he knew too well.',
+   state.lives===0?'Then the cold stone of the cell met his cheek. A breath entered lungs that had stopped moving.':'Again, the last breath yielded to the cold of a cell he knew.',
    'No one called it a miracle. No one else had seen what he had seen. Kael could not yet explain why.'
  ],choices:[],special:'postDeath'};
  const data=STORY[state.scene];if(!data)throw Error('Unknown scene: '+state.scene);
@@ -147,7 +151,7 @@ function createChoice(ch,handler){
  const body=document.createElement('span');
  const title=document.createElement('div');title.className='label';title.textContent=ch.label;
  body.append(title);
- if(ch.detail){const detail=document.createElement('div');detail.className='detail';detail.textContent=ch.detail;body.append(detail);}
+ // The prose reveals consequences; don't display mechanical commentary beneath choices.
  const chev=document.createElement('span');chev.className='chev';chev.textContent='›';chev.setAttribute('aria-hidden','true');
  button.append(body,chev);button.addEventListener('click',handler);return button;
 }
@@ -165,14 +169,14 @@ function render(){
    $('choiceTitle').textContent='What goes through his mind?';
    for(const emotion of feelingChoices())choices.append(createChoice(emotion,()=>{apply(emotion.score);reawaken(emotion);}));
  }else {
-   $('choiceTitle').textContent=data.special==='introDeath'?'Start again':data.special==='beat'||data.special==='typed'?'Continue the story':'Choose Kael’s next action';
+   $('choiceTitle').textContent=data.special==='introDeath'?'Start again':data.special==='beat'||data.special==='typed'?'Continue the story':'What does Kael do?';
    for(const choice of options)choices.append(createChoice(choice,()=>choose(choice)));
  }
  $('freeActionInput').placeholder=({training:'I speak to the bigger boy before anyone gets hurt…',upper_streets:'I knock over a crate to distract the guards…',guards_downed:'I lower my blade and warn the captain not to follow…',post_hill:'I ask Elena whether she trusts this road…'})[state.scene]||'I look for another way to solve this…';
  $('narratorMode').textContent=localStorage.getItem('unmarked-narrator-access')?'Private AI configured · offline fallback':'Offline interpreter · enable private AI in Menu';
  $('freeActionPanel').hidden=!(STORY[state.scene] && typeof state.scene==='string' && !['birth','judgment','found'].includes(state.scene) && (state.improvCounts[state.scene]||0)<2);
- $('footLeft').textContent=state.introComplete?'The open road · Beyond Luminara':'Luminara · Before the open sky';
- $('footRight').textContent=state.introComplete?'CHAPTER ONE':'INTRODUCTION';
+ $('footLeft').textContent=state.introComplete?'Luminara · A royal dungeon':'Luminara and the lands beyond';
+ $('footRight').textContent=state.introComplete?'THE DUNGEON':'INTRODUCTION';
  document.documentElement.style.setProperty('--scale',state.readingScale);
  save();window.scrollTo({top:0,behavior:'instant'});
 }
@@ -199,19 +203,19 @@ function journalModal(){const body=$('modalBody');body.replaceChildren();
  showModal('Kael’s Journal');
 }
 function downloadSave(){
- const blob=new Blob([JSON.stringify({version:2,state},null,2)],{type:'application/json'});
+ const blob=new Blob([JSON.stringify({version:5,state},null,2)],{type:'application/json'});
  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='unmarked-ones-save.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
 }
 function importSave(){const input=document.createElement('input');input.type='file';input.accept='.json,application/json';
  input.addEventListener('change',async()=>{if(!input.files?.length)return;try{
  const raw=await input.files[0].text();if(raw.length>3000000)throw Error('File too large');const parsed=JSON.parse(raw);const s=parsed?.state;
- if(parsed.version!==2||!s||!s.mind||!Array.isArray(s.flags)||!(STORY[s.scene]||['_postDeath','_introDeath'].includes(s.scene)||(s.scene==='_beat'&&s.pendingBeat?.target)||(s.scene==='_typedPrelude'&&s.pendingTyped?.from))||typeof s.introComplete!=='boolean'||typeof s.mind.violence!=='number')throw Error('Not a valid save');
+ if(parsed.version!==5||!s||!s.mind||!Array.isArray(s.flags)||!(STORY[s.scene]||['_postDeath','_introDeath'].includes(s.scene)||(s.scene==='_beat'&&s.pendingBeat?.target)||(s.scene==='_typedPrelude'&&s.pendingTyped?.from))||typeof s.introComplete!=='boolean'||typeof s.mind.violence!=='number')throw Error('Not a valid save');
  state={...init(),...s};closeModal();render();
  }catch(e){window.alert('This does not appear to be a valid prototype save file.');}});
  input.click();
 }
 function menuModal(){const body=$('modalBody');body.replaceChildren();
- paragraph(body,'A playable literary fantasy adapted from the author’s canonical opening. Your choices can create alternate histories, and the story remembers what Kael actually did.');
+ paragraph(body,'A living-novel opening adapted from the author’s history. Decisions and their consequences become the novel’s own prose.');
  heading(body,'Kael at this moment');
  paragraph(body,descriptiveMind(state));
  paragraph(body,`Health: ${state.hp}/40 · Supplies: ${state.supplies} · Places explored: ${state.visited.length}`,'small');

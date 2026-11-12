@@ -44,7 +44,7 @@ function localInterpret(action,choices,scene){
   }
  }
  if(pick<0)return {option:'improvise',tone:'focus',passage:'Kael measured what could be done without mistaking a wish for a possibility. He tried a small part of the idea, watching for a response. For now, the larger situation remained unresolved.',source:'local'};
- return {option:String(pick),tone:'focus',passage:`Kael allowed the idea to take shape: “${action.trim().replace(/[.!?]+$/,'').slice(0,180)}.” He measured the distance between wanting something and making it happen. The choice was his intention; the next moment would show what the world allowed.`,source:'local'};
+ return {option:String(pick),tone:'focus',passage:`Kael considered the idea: ${action.trim().replace(/[.!?]+$/,'').slice(0,180)}. His body moved before he could be entirely certain of the outcome. Around him, the world did not grow any less dangerous. Whatever followed would depend on the people and obstacles already before him.`,source:'local'};
 }
 function validNarratorResult(result,allowedCount){
  if(!result||typeof result!=='object'||typeof result.option!=='string'||typeof result.passage!=='string'||typeof result.tone!=='string')return false;

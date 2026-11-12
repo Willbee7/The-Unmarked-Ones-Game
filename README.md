@@ -1,64 +1,89 @@
-# THE UNMARKED ONES · PROTOTYPE IV
+# The Unmarked Ones — Prototype V: The Living Introduction
 
-**A playable, phone-friendly living novel, now with typed actions and an optional AI narrator.**
+A browser-playable, novel-style interactive fantasy based on the author's manuscript. The manuscript is a **reference for the world**, not an inflexible script. Scene descriptions and aftermaths react to Kael's decisions, and some choices can permanently divert the story from the canonical sequence.
 
-## Which package should I use?
+## The most important correction
 
-**Play Now ZIP** (`The-Unmarked-Ones-Play-Now-IV.zip`): upload to your existing Netlify Drop site, or open from a real web server. The original branching game works and the new "write your own action" textbox uses a **limited, local interpreter**. This ZIP contains no AI server function or key. Do not expect unrestricted AI narration from Netlify Drop.
+**The introduction does not end at the Pit or when Kael reaches the outside world.** The canonical introduction continues through the resistance, apparent defeat of Seraphina, and illusory victory. **Only when Kael awakens in the royal dungeon from the false future does the introduction end.** That awakening is an illusion reveal, NOT a death. Pre-awakening death is an ordinary full restart with no memory. True death after the awakening can initiate Kael's private experience of an earlier moment; other characters remember nothing from a life they did not experience.
 
-**AI-ready Project ZIP** (`The-Unmarked-Ones-AI-Ready-IV.zip`): use for the optional OpenAI-powered narrator with a **Git-connected Netlify deployment** or the Netlify CLI. This package includes `site/` and `netlify/functions/narrate.mjs`. The AI endpoint uses a server-side API key and a private access passphrase. It is not enabled by uploading the ZIP through Netlify Drop alone.
+These rules are deliberately hidden from players in the introduction. The protagonist discovers what is happening through his own narration later.
 
-## What's new
+## What is playable now
 
-- **Type an action** in Kael's first controllable scenes. Examples: “I try talking to the bully before fighting,” “I strike the guard before he casts,” “I check the wall for a concealed passage.”
-- **When AI is connected:** a server-side model reads the current scene, Kael's limited visible history, and the available authored decisions. It writes a short third-person passage describing his attempted action and selects the closest authorized branch, or classifies a small side action as `improvise`.
-- **When AI is unavailable:** the same box still works via a limited keyword interpreter. It is not a true AI narrator. Its output is explicitly labeled “Offline action interpretation.”
-- **The game engine remains authoritative.** The AI cannot rewrite facts, kill a character, activate memory, bypass the introduction, or force Kael to obey a command his developed personality resists. Major world changes require authored branches. There are at most two non-branching side actions per scene in this prototype.
-- Standard choices, bookmarks, old saves, hidden death rules, and the butterfly-effect story remain intact.
+- Kael's origin, rescue by the **older scavenger Lysander**, childhood, and first conflict in the Pit.
+- Royal guard confrontation: sparing the guard follows an event compatible with the manuscript; killing the guard changes the response to the Pit, and a severe massacre can create a fundamentally different history.
+- Friendship with Elena, preparations for escape, and ancient passages, including a branch where the older Lysander survives.
+- First days beyond Luminara, personality-sensitive civilian and surrendered-soldier choices, Ulysses' tension, capture, an apparent victory, and the **cell-awakening introduction boundary**.
+- A short post-awakening dungeon excerpt with the first example of private recollection after **actual death**. Severe injury does not trigger it.
+- **Independent Will**: when a behavior is well established, Kael may act differently from the player's chosen intention. That difference is narrated as action, not as a pop-up mechanic.
+- Choice-aftereffects as third-person novel passages. Freeform typed actions are supported in limited form: they can match an existing choice or permit up to two small, non-branching actions per scene.
+- Browser autosave, journal, adjustable font size, save export/import.
 
-## Important narrative boundaries
+**Limit:** This is a substantial proof of concept, not the entire 53-part manuscript. Routes that radically alter history currently reach a clearly labeled *unfinished alternate introduction* rather than being forced into the canonical prison. The full emotionally aware AI narrator and all future world states are not implemented as unconstrained generation.
 
-The source manuscript is the canonical **world history and character foundation**, not a verbatim script the player must read. The actual route depends on actions and consequences. Not all future alternate worlds are authored yet.
+## Which ZIP to use
 
-1. Queen Seraphina rejects Kael, born without magic, and elder scavenger Lysander rescues him in the Pit of Silence.
-2. Young Kael's no-kill rule is canonical during the royal guard encounter. Killing a guard creates alternate history and may escalate retaliation.
-3. The elder Lysander and Thorne's **younger brother** Lysander are distinct people.
-4. During the introduction, **true death causes an ordinary full restart**. No premature hints.
-5. After the introduction, true death begins a strange experience only Kael can remember. Injuries and unconsciousness alone do not trigger it.
-6. Kael has an evolving emotional life and **Independent Will**; a player instruction can produce a different action when earned by past choices.
-7. The manuscript's apparent defeat of the queen is a later illusion, not the actual chronology. Prototype IV does not implement the full Chapter 11 story.
+### `The-Unmarked-Ones-V-Play-Now.zip`
 
-## Deploy the Play Now ZIP (no AI setup)
+A static website ZIP with `index.html` at its root. Upload it using your existing **Netlify site's Deploys/manual deploy** area, or serve its contents from any normal static host. You can read, make choices, and type actions using the **limited offline interpreter**. This package has **no server-side AI**.
 
-1. On iPhone, download **The-Unmarked-Ones-Play-Now-IV.zip**.
-2. Open your existing Netlify site dashboard > Deploys, then use its manual upload area to publish the website ZIP. This package has `index.html` at its top level.
-3. Open the site in Safari. After Kael's early origin pages, the age-seven scene has a textbox labeled "Or write your own action".
-4. For a no-code test, type `I talk to the bully and ask for the food back.` and press **Attempt this action**. Offline interpretation works; tap **Discover what happens next** to apply the actual consequence.
+To test on your computer: unzip it and, from that extracted folder, run:
 
-If you are upgrading the same Netlify site, browser localStorage should retain the previous Prototype III save on that origin. **Export a save from the current site's Menu first**, just in case.
+```bash
+python -m http.server 8000
+```
 
-## Deploy the full AI narrator (Git-connected Netlify)
+Then open `http://localhost:8000` in Chrome or Edge. Double-clicking `index.html` can also work on desktops, but a local web server is more reliable. An iPhone Files preview is **not** a supported way to play; open the published website in Safari.
 
-This requires a separate **OpenAI API key** with API billing. A ChatGPT subscription doesn't itself supply API usage.
+### `The-Unmarked-Ones-V-AI-Ready.zip`
 
-1. Unzip **The-Unmarked-Ones-AI-Ready-IV.zip** and upload the contents to a **private GitHub repository**. Keep the directory layout intact: `site/index.html`, `netlify/functions/narrate.mjs`, and `netlify.toml` at repo root. Never commit your key or access passphrase.
-2. In Netlify, import the GitHub repository as a new site or connect it as the source for your current site. The included `netlify.toml` sets `site` as the publish directory and `netlify/functions` as the serverless functions directory. Leave the build command blank.
-3. In Netlify environment variables, add **`OPENAI_API_KEY`** with your private API key, and **`NARRATOR_ACCESS_CODE`** with a long secret passphrase (20+ random characters recommended). Make sure these are available to **Functions**. Do not store either in source or a `netlify.toml` file.
-4. Trigger a new Netlify deployment. Check the deploy summary for a published `narrate` function. Without a deployed function, the game stays in offline-interpreter mode.
-5. Open the website on your iPhone. Choose **Menu > Enter narrator passphrase** and enter the **access code** (never the OpenAI API key). This code is stored on that device in browser localStorage. Choose a typed action. The game should show **AI narration** in the generated prelude if the service responds.
-6. If the AI key/code is missing, invalid, the function cannot be reached, or the provider request fails, the game safely uses the offline interpreter and the canonical story engine still works.
+Complete source directory. For the private AI narrator, push its **contents** to a **separate GitHub game repository** (never the trading bot repository) and connect that repository to Netlify. At repo root, retain:
 
-**Cost and privacy:** API calls may have charges. The request sends the player's typed action plus a small window of relevant scene text, recent journal and Kael's visible psychological context to the AI provider. Do not put personal information into player text. The optional passphrase restricts casual access; this is not a full production authentication system. Before a public launch, add durable per-user authentication, centralized rate limiting, monitoring, quotas, and spending alerts. To disable AI instantly, remove `OPENAI_API_KEY` or `NARRATOR_ACCESS_CODE` and redeploy.
+```
+site/index.html
+site/engine.js
+site/story.js
+site/beats.js
+site/narrator.js
+netlify/functions/narrate.mjs
+netlify.toml
+```
 
-## Working locally
+Netlify should use the included configuration: `publish = "site"`, functions directory = `netlify/functions`, and no build command. Add server-side environment variables **`OPENAI_API_KEY`** and **`NARRATOR_ACCESS_CODE`** in the Netlify site dashboard, with functions access, and redeploy. The second value is a long private passphrase; enter *that passphrase* inside the game's Menu. **Never paste your OpenAI API key into the game, GitHub, this chat, or a public file.** Paid API usage and rate limits apply. ChatGPT subscription billing is separate from OpenAI API billing.
 
-- Static reading: serve `site/` with a local HTTP server (e.g. `python -m http.server 8000 --directory site`), then open `http://localhost:8000` on a computer.
-- Test the AI function locally with the Netlify CLI (`npx netlify-cli dev`) while both environment variables are configured. Do not put the real key in committed files.
+The hosted AI presently writes an **attempt** and chooses a suitable authored branch or small improvised action. The game engine alone resolves deaths, relationships, irreversible consequences, Kael's resistance, and introduction status. AI is not allowed to invent a permanent world mutation yet. Without valid hosting, key, or access code the game still works with its offline fallback.
 
-## Automated tests performed
+Security caution: The current passphrase/IP limiter is only suitable for limited private testing. It is **not** a production multi-user authentication or spending-control solution.
 
-- `python tests/test_regression.py` — original story routes, guard outcomes, intro death, post-intro memory, independent will, responsive layouts.
-- `python tests/test_freeform.py` — simulated successful AI output, offline fallback, minor side actions, no uncaught browser errors.
-- `node tests/test_backend.mjs` — private passphrase, no-key handling, request validation, structured API responses, rejected invalid choices and premature spoilers.
+## Save compatibility
 
-**Live provider and production Netlify tests have NOT been run here:** they require the site and account owner's configuration and approval. The app works with the offline interpreter until that is done.
+Prototype V uses a **new browser save namespace** to avoid importing Prototype IV saves that had the wrong introduction boundary. Existing older saves are not deleted, but they are not silently migrated. Prototype V export files have version 5 and may be imported into another Prototype V installation.
+
+## Canon and continuity choices
+
+- Seraphina's reign; the other twelve kingdoms; Unmarked class status; Kael's unusually stubborn physical resilience and initial no-kill position.
+- Elder **Lysander the scavenger** raises Kael. **Thorne's younger brother Lysander** is a different character.
+- The seeming victory over Seraphina is illusory. The dungeon wake-up reveals the truth.
+- The manuscript is an author's source, not a series of required dialogue lines. Alternate events are permitted when they follow causally from actions.
+- Kael's psychological response can include compassion, rage, grief, numbness, acceptance, and curiosity, not a binary good/evil alignment.
+- Personal experiences and thoughts do not automatically grant someone else supernatural knowledge.
+
+The complete manuscript text is intentionally **not bundled** in this public-site project. Keep the author's large source archive in a private workspace, not in a publicly deployed website.
+
+## Tests performed for this build
+
+```bash
+node --check site/engine.js
+node --check site/story.js
+node --check site/beats.js
+node --check site/narrator.js
+node --check netlify/functions/narrate.mjs
+node tests/test_story_vm.cjs
+node tests/test_backend.mjs
+```
+
+They verify canonical progression, the corrected cell boundary, earlier ordinary deaths, later Kael-only memories, catastrophic alternate histories, Independent Will, offline choice mapping, and server request validations using simulated API responses. **A live OpenAI API call, live Netlify deployment, and physical iPhone test have not been performed.** A Chromium test file is included but could not be executed in this environment due to its browser navigation policy.
+
+## Recommended next development stage
+
+Build a world-state ledger and consequence adjudicator that store **who is alive, which facts are known, where everyone is, and what Kael believes**, then pass only relevant manuscript lore to the AI narrator. That will let typed actions create validated new scenes instead of always mapping back to predefined decisions, while preserving continuity and keeping costs manageable.

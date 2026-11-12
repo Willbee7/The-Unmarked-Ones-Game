@@ -1,40 +1,45 @@
-# Prototype IV: action and narration pipeline
+# Prototype V architecture
+
+## Current request path
 
 ```text
-Reader chooses an existing option or types an action
-                              |
-                    Typed action only
-                              v
-           Private Netlify narrator function (optional)
-               - access passphrase required
-               - OpenAI key held server-side
-               - validates prompt + response
-               - selects an *existing* option ID or "improvise"
-               - produces immediate narrative of an attempt, not a completed event
-                              |
-             service unavailable? -> offline keyword interpreter
-                              |
-                        Player reads prose
-                              |
-                  Game's authoritative `choose()`
-               + Independent Will checks
-               + canonical / butterfly-effect branch resolution
-               + injury, death, memory, interpersonal consequences
-               + browser save
+Player selects authored decision OR types an attempted action
+   |
+   +--- Authored decision ----------------------+
+   |                                            |
+   +--- Typed action ---- private narrator? ----+
+                         | (optional)
+               AI-written immediate attempt
+               + permitted option ID or small improv
+                         |
+                         v
+         Deterministic story engine / Independent Will
+                - history and personality
+                - injury, deaths, material outcomes
+                - dialogue and passage mutations
+                - scene and introduction transition
+                         |
+                         v
+             Novel prose + persistent browser save
 ```
 
-## Current limits
-- Author-owned branching scenes remain the source of major world-state transitions; AI does not dynamically invent multi-chapter canon divergence.
-- Two side-action attempts per scene to prevent loops without meaningful state advances.
-- Text generation operates at action staging, before a prewritten consequential beat.
-- No cross-device save sync, no user accounts, and no freeform multi-step planner yet.
-- No production-grade anti-abuse/authentication. The access passphrase is suitable for limited personal testing, not a public multi-user release.
-- API provider integration has **mock tests**, not a live paid call.
+## Canonical introduction boundary
 
-## Next development goals
-1. Give the game engine a typed world-state schema with locations, characters, schedules, inventory, evidence and relationships.
-2. Use a deterministic adjudicator for attempted actions, including probabilities, available tools, and character resistance.
-3. Let AI propose constrained consequences but never apply them unless a server validator confirms they are possible.
-4. Generate new scene prose after the adjudication, so the narration truly changes instead of restating an existing paragraph.
-5. Create path-mapping and continuity tests for both reconverging and permanently divergent histories.
-6. Add secure per-user accounts, spend limits, and moderation/abuse protection before opening unlimited AI generation to the public.
+`birth → judgment → found → training → ... → threshold (ESCAPE, NOT AN UNLOCK) → ... → taken → dream_mountain → dream_assault → dream_throne → dream_fall → dream_break → cell_awake (INTRODUCTION COMPLETE)`
+
+`assignScene('cell_awake')` invokes `finishIntroduction()` and creates a provisional return anchor. This is not a death or a memory event. `die()` decides whether to issue an ordinary game over or post-introduction recollection **only** based on `introComplete`. A separate alternate path can avoid `cell_awake` entirely and therefore remains in the introduction until a suitable future endpoint is authored.
+
+## Why the AI narrator cannot mutate state directly
+
+An LLM may suggest plausible prose but can contradict a character's survival, hidden knowledge, or the return rules. The hosted function receives a small scene excerpt, recent visible decisions, and selected psychological context; it returns an attempted-action passage and an allowed branch id or an `improvise` label. The deterministic engine validates and applies the actual consequence.
+
+## Future architecture
+
+1. **World ledger:** durable character existence, positions, relationships, knowledge provenance, equipment, causal events, and immutable history log.
+2. **Intent adjudicator:** can Kael attempt this? Does Kael resist, modify, or comply? What can realistically change?
+3. **Conditional scene writer:** write final prose *after* validated outcomes, not just the attempted action before it.
+4. **Private lore retrieval:** use only relevant portions from the full author manuscript, mark spoilers as inaccessible to the player's timeline, separate canonical facts from possible events.
+5. **Alternate introduction conclusions:** define major divergent arcs with meaningful gates instead of forcing the prisoner cell or leaving branches permanently unresolved.
+6. **Secure platform:** individual accounts/permissions, server-side saving, usage quotas, telemetry, abuse protection, cost controls before broad public use.
+
+Current Netlify access passphrase and process-local rate limit are for **personal testing**, not a public production launch.
